@@ -51,7 +51,21 @@
         android:inputType="text"
         android:maxWidth="488dp"
         android:minHeight="48dp"
-        android:autofillHints="category" /> <!-- Autofill hint para categoria -->
+        android:autofillHints="category" />
+
+    <!-- EditText para os comentários -->
+    <EditText
+        android:id="@+id/etComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/hint_expense_comments"
+        android:inputType="textMultiLine"
+        android:maxHeight="150dp"
+        android:padding="10dp"
+        android:scrollbars="vertical"
+        android:maxWidth="488dp"
+        android:minHeight="48dp" />
 
     <!-- Botão para salvar a despesa -->
     <Button

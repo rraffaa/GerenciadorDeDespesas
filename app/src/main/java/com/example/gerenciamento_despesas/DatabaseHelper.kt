@@ -11,7 +11,8 @@ data class Conta(
     val nome: String,
     val valor: Double,
     val dataVencimento: String,
-    val categoria: String
+    val categoria: String,
+    val comentarios: String? // Novo campo para armazenar os comentários
 )
 
 class DatabaseHelper(context: Context) :
@@ -26,17 +27,19 @@ class DatabaseHelper(context: Context) :
         private const val COLUMN_VALUE = "valor"
         private const val COLUMN_DATE = "dataVencimento"
         private const val COLUMN_CATEGORY = "categoria"
+        private const val COLUMN_COMMENTS = "comentarios" // Nova coluna
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        // Criação da tabela
+        // Criação da tabela com a nova coluna para comentários
         val createTable = """
         CREATE TABLE $TABLE_NAME (
             $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             $COLUMN_NAME TEXT NOT NULL,
             $COLUMN_VALUE REAL NOT NULL,
             $COLUMN_DATE TEXT NOT NULL,
-            $COLUMN_CATEGORY TEXT NOT NULL
+            $COLUMN_CATEGORY TEXT NOT NULL,
+            $COLUMN_COMMENTS TEXT
         )
     """.trimIndent()
         db?.execSQL(createTable)
@@ -47,14 +50,15 @@ class DatabaseHelper(context: Context) :
         onCreate(db)
     }
 
-    // Método para adicionar uma despesa
-    fun addConta(nome: String, valor: Double, dataVencimento: String, categoria: String) {
+    // Método para adicionar uma despesa com comentários
+    fun addConta(nome: String, valor: Double, dataVencimento: String, categoria: String, comentarios: String?) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_NAME, nome)
             put(COLUMN_VALUE, valor)
             put(COLUMN_DATE, dataVencimento)
             put(COLUMN_CATEGORY, categoria)
+            put(COLUMN_COMMENTS, comentarios) // Adicionando os comentários
         }
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -71,7 +75,8 @@ class DatabaseHelper(context: Context) :
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
                 cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VALUE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY))
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMMENTS)) // Recuperando os comentários
             )
             contas.add(conta)
         }
@@ -93,7 +98,8 @@ class DatabaseHelper(context: Context) :
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
                 cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VALUE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY))
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMMENTS)) // Recuperando os comentários
             )
             contas.add(conta)
         }

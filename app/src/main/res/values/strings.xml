@@ -21,12 +21,14 @@
     <string name="btn_filter_description">Botão para filtrar as despesas pela categoria</string>
     <string name="tv_filtered_results_description">Exibição dos resultados filtrados das despesas</string>
 
-    <string name="error_name_required">O campo Nome é obrigatório!</string>
-    <string name="error_valid_amount">Insira um valor válido para a despesa!</string>
-    <string name="error_invalid_date">Insira uma data válida no formato dd/MM/yyyy!</string>
-    <string name="error_category_required">O campo Categoria é obrigatório!</string>
-    <string name="expense_added_successfully">Despesa adicionada com sucesso!</string>
-    <string name="error_saving_expense">Erro ao salvar despesa: %1$s</string>
+
+        <string name="error_name_required">O nome é obrigatório.</string>
+        <string name="error_valid_amount">Por favor, insira um valor válido.</string>
+        <string name="error_invalid_date">Data inválida.</string>
+        <string name="error_category_required">A categoria é obrigatória.</string>
+        <string name="expense_added_successfully">Despesa adicionada com sucesso!</string>
+        <string name="error_saving_expense">Erro ao salvar a despesa: %1$s</string>
+        <string name="hint_expense_comments">Comentários sobre a despesa</string>
 
 
 </resources>

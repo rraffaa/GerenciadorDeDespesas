@@ -38,6 +38,9 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.7.5")
     implementation("androidx.compose.material3:material3:1.3.1")
     implementation(kotlin("stdlib", version = "1.9.10"))
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+
 
     // Dependências para testes unitários
     testImplementation("org.mockito:mockito-core:5.0.0")
