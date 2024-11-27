@@ -2,6 +2,7 @@ package com.example.gerenciamento_despesas.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -22,7 +23,7 @@ private val LightColorScheme = lightColorScheme(
     secondary = PurpleGrey40,
     tertiary = Pink40
 
-    /* Other default colors to override
+    /* Outros padrões de cores para substituir
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
     onPrimary = Color.White,
@@ -36,16 +37,28 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun Gerenciamento_DespesasTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
+    // Cores dinâmicas estão disponíveis no Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    val context = LocalContext.current
+
+    // Aviso sobre suporte a cores dinâmicas
+    if (dynamicColor && Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+        Log.w("Theme", "Cores dinâmicas não são suportadas nesta versão do Android. Usando cores estáticas.")
+    }
+
+    // Definição do esquema de cores
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            try {
+                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            } catch (e: Exception) {
+                // Em caso de erro, usar esquemas estáticos
+                Log.e("Theme", "Erro ao aplicar cores dinâmicas: ${e.message}. Usando cores estáticas.")
+                if (darkTheme) DarkColorScheme else LightColorScheme
+            }
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }

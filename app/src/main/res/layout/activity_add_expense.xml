@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- EditText para o nome da despesa -->
+    <EditText
+        android:id="@+id/etExpenseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:autofillHints="name"
+        android:hint="@string/hint_expense_name"
+        android:inputType="text"
+        android:maxWidth="488dp"
+        android:minHeight="48dp" />
+
+    <!-- EditText para o valor da despesa -->
+    <EditText
+        android:id="@+id/etExpenseAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:autofillHints="transactionAmount"
+        android:hint="@string/hint_expense_amount"
+        android:inputType="numberDecimal"
+        android:maxWidth="488dp"
+        android:minHeight="48dp" />
+
+    <!-- EditText para a data da despesa -->
+    <EditText
+        android:id="@+id/etExpenseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:autofillHints="date"
+        android:hint="@string/hint_expense_date"
+        android:inputType="date"
+        android:maxWidth="488dp"
+        android:minHeight="48dp" />
+
+    <!-- EditText para a categoria da despesa -->
+    <EditText
+        android:id="@+id/etCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/hint_expense_category"
+        android:inputType="text"
+        android:maxWidth="488dp"
+        android:minHeight="48dp"
+        android:autofillHints="category" /> <!-- Autofill hint para categoria -->
+
+    <!-- Botão para salvar a despesa -->
+    <Button
+        android:id="@+id/btnSaveExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:maxWidth="320dp"
+        android:text="@string/btn_save_expense" />
+
+</LinearLayout>

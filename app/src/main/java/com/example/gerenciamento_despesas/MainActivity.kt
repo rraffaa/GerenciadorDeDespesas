@@ -1,6 +1,8 @@
 package com.example.gerenciamento_despesas
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,15 +19,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             Gerenciamento_DespesasTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "Bem-vindo",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
+        }
+
+        // Navegação para Dashboard
+        findViewById<Button>(R.id.button_add)?.setOnClickListener {
+            startActivity(Intent(this, DashboardActivity::class.java))
         }
     }
 }
@@ -33,7 +41,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Olá $name!",
         modifier = modifier
     )
 }
@@ -42,6 +50,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     Gerenciamento_DespesasTheme {
-        Greeting("Android")
+        Greeting("Usuário")
     }
 }

@@ -1,0 +1,35 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etCategoryFilter"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="@string/hint_category_filter"
+        android:inputType="text"
+        android:autofillHints="category"
+        android:importantForAccessibility="yes" /> <!-- Removido contentDescription -->
+
+    <!-- Button para filtrar despesas -->
+    <Button
+        android:id="@+id/btnFilter"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/btn_filter"
+        android:importantForAccessibility="yes"
+        android:contentDescription="@string/btn_filter_description" />
+
+    <TextView
+        android:id="@+id/tvFilteredResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:text="@string/tv_filtered_results"
+        android:importantForAccessibility="yes"
+        android:contentDescription="@string/tv_filtered_results_description" />
+
+</LinearLayout>
