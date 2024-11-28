@@ -1,16 +1,8 @@
-
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-
 buildscript {
     repositories {
         google()
         mavenCentral()
+        maven("https://jitpack.io")
     }
 
     dependencies {
@@ -22,8 +14,4 @@ buildscript {
 plugins {
     id("com.android.application") version "8.6.1" apply false
     kotlin("android") version "1.9.10" apply false
-}
-
-fun pluginManagement(function: () -> Unit) {
-
 }
