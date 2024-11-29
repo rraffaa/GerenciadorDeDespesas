@@ -5,54 +5,63 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.gerenciamento_despesas.ui.adapters.ExpenseAdapter
+import com.example.gerenciamento_despesas.ui.viewmodel.ExpenseViewModel
 
 class DashboardActivity : AppCompatActivity() {
 
     private lateinit var expenseAdapter: ExpenseAdapter
-    private lateinit var expenses: MutableList<Conta>
+    private val expenseViewModel: ExpenseViewModel by viewModels()
+
+    // Launcher para o AddExpenseActivity
+    private val addExpenseLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                expenseViewModel.refreshExpenses()  // Atualiza a lista de despesas
+            }
+        }
+
+    // Launcher para o EditExpenseActivity
+    private val editExpenseLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                expenseViewModel.refreshExpenses()  // Atualiza a lista de despesas
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        // Inicializa a lista de despesas
-        expenses = getExpenses()
-
-        // Configura o Adapter, passando os métodos de editar e deletar como parâmetros
-        expenseAdapter = ExpenseAdapter(this, expenses, ::editExpense, ::deleteExpense)
+        // Inicializa o adaptador e configura a lista de despesas
+        expenseAdapter = ExpenseAdapter(this, mutableListOf(), ::editExpense, ::deleteExpense)
         val lvExpenses = findViewById<ListView>(R.id.lvExpenses)
         lvExpenses.adapter = expenseAdapter
+
+        // Observa as mudanças na lista de despesas através do LiveData
+        expenseViewModel.expenses.observe(this) { expenses ->
+            expenseAdapter.updateList(expenses)
+        }
 
         // Configura o botão de adicionar despesa
         val btnAddExpense = findViewById<Button>(R.id.btnAddExpense)
         btnAddExpense.setOnClickListener {
             val intent = Intent(this, AddExpenseActivity::class.java)
-            startActivity(intent)
+            addExpenseLauncher.launch(intent)  // Usando o launcher para adicionar despesa
         }
     }
 
-    // Função para editar a despesa
-    private fun editExpense(expense: Conta) {
+    private fun editExpense(expense: Expense) {
         val intent = Intent(this, AddExpenseActivity::class.java)
-        intent.putExtra("expense_id", expense.id)  // Passa o ID da despesa para edição
-        startActivity(intent)
+        intent.putExtra("expense_id", expense.id)
+        editExpenseLauncher.launch(intent)  // Usando o launcher para editar despesa
     }
 
-    // Função para deletar a despesa
-    private fun deleteExpense(expense: Conta) {
-        val db = DatabaseHelper(this)
-        db.deleteConta(expense.id)  // Atualiza o método para usar deleteConta
-        expenses.remove(expense)  // Remove da lista local
-        expenseAdapter.notifyDataSetChanged()  // Atualiza a lista
+    private fun deleteExpense(expense: Expense) {
+        expenseViewModel.deleteExpense(expense)
         Toast.makeText(this, R.string.expense_deleted_successfully, Toast.LENGTH_SHORT).show()
-    }
-
-    // Função fictícia para obter despesas (substituir por acesso ao banco de dados real)
-    private fun getExpenses(): MutableList<Conta> {
-        return mutableListOf(
-            Conta(1, "Conta de Luz", 100.0, "2024-12-01", "Contas Mensais", "Pagar até o vencimento."),
-            Conta(2, "Supermercado", 250.0, "2024-12-05", "Alimentação", "Verificar promoções antes.")
-        )
     }
 }

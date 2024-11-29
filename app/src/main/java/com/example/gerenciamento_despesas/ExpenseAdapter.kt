@@ -1,66 +1,59 @@
-package com.example.gerenciamento_despesas
+package com.example.gerenciamento_despesas.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
+import com.example.gerenciamento_despesas.Expense // Importando a classe Expense
+import com.example.gerenciamento_despesas.R
 
 class ExpenseAdapter(
-    private val context: Context,
-    private val expenses: List<Conta>,
-    private val onEdit: (Conta) -> Unit,
-    private val onDelete: (Conta) -> Unit
-) : BaseAdapter() {
+    context: Context,
+    private var expenses: MutableList<Expense>,
+    private val editExpense: (Expense) -> Unit,
+    private val deleteExpense: (Expense) -> Unit
+) : ArrayAdapter<Expense>(context, R.layout.item_expense, expenses) {
 
-    override fun getCount(): Int {
-        return expenses.size
-    }
+    // Sobrescreve o método getView para customizar o layout de cada item
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_expense, parent, false)
 
-    override fun getItem(position: Int): Any {
-        return expenses[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return expenses[position].id.toLong()
-    }
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view: View = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_expense, parent, false)
         val expense = expenses[position]
 
-        val nameTextView: TextView = view.findViewById(R.id.expenseName)
-        val amountTextView: TextView = view.findViewById(R.id.expenseAmount)
-        val dateTextView: TextView = view.findViewById(R.id.expenseDate)
-        val categoryTextView: TextView = view.findViewById(R.id.expenseCategory)
-        val commentsTextView: TextView = view.findViewById(R.id.expenseComments)
-        val editButton: Button = view.findViewById(R.id.btnEdit)
-        val deleteButton: Button = view.findViewById(R.id.btnDelete)
+        // Referenciando os elementos corretamente com os IDs fornecidos no layout
+        val txtName = view.findViewById<TextView>(R.id.expenseName)
+        val txtAmount = view.findViewById<TextView>(R.id.expenseAmount)
+        val txtDate = view.findViewById<TextView>(R.id.expenseDate)
+        val txtCategory = view.findViewById<TextView>(R.id.expenseCategory)
+        val txtComments = view.findViewById<TextView>(R.id.expenseComments)
+        val btnEdit = view.findViewById<Button>(R.id.btnEdit)
+        val btnDelete = view.findViewById<Button>(R.id.btnDelete)
 
-        // Preencher com as informações da despesa
-        nameTextView.text = expense.nome
-        amountTextView.text = context.getString(R.string.expense_amount, expense.valor)
-        dateTextView.text = expense.dataVencimento
-        categoryTextView.text = expense.categoria
-        commentsTextView.text = expense.comentarios ?: context.getString(R.string.hint_expense_comments)
+        // Preenchendo os campos com as informações da despesa
+        txtName.text = expense.name
+        txtAmount.text = context.getString(R.string.expense_amount, expense.amount)
+        txtDate.text = expense.dueDate
+        txtCategory.text = expense.category
+        txtComments.text = expense.notes
 
-        // Ação do botão Editar
-        editButton.setOnClickListener {
-            onEdit(expense)
-            Toast.makeText(context, "Editar: ${expense.nome}", Toast.LENGTH_SHORT).show()
-        }
+        // Configurando o botão de editar
+        btnEdit.setOnClickListener { editExpense(expense) }
 
-        // Ação do botão Deletar
-        deleteButton.setOnClickListener {
-            onDelete(expense)
-            Toast.makeText(context, "Deletar: ${expense.nome}", Toast.LENGTH_SHORT).show()
-            val dbHelper = DatabaseHelper(context)
-            dbHelper.deleteConta(expense.id)
-        }
+        // Configurando o botão de excluir
+        btnDelete.setOnClickListener { deleteExpense(expense) }
 
         return view
+    }
+
+    // Método para atualizar a lista de despesas e notificar a interface
+    fun updateList(expenses: List<Expense>) {
+        // Só atualiza se a lista realmente mudou
+        if (this.expenses != expenses) {
+            this.expenses = expenses.toMutableList()  // Converte a lista para MutableList
+            notifyDataSetChanged()  // Notifica que os dados mudaram
+        }
     }
 }
