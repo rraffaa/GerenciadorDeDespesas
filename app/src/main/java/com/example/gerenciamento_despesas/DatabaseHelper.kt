@@ -36,7 +36,7 @@ class DatabaseHelper(context: Context) :
         CREATE TABLE $TABLE_NAME (
             $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             $COLUMN_NAME TEXT NOT NULL,
-            $COLUMN_VALUE REAL NOT NULL,
+            $COLUMN_VALUE TEXT NOT NULL,  -- Campo armazenará texto criptografado
             $COLUMN_DATE TEXT NOT NULL,
             $COLUMN_CATEGORY TEXT NOT NULL,
             $COLUMN_COMMENTS TEXT
@@ -50,12 +50,13 @@ class DatabaseHelper(context: Context) :
         onCreate(db)
     }
 
-    // Método para adicionar uma despesa com comentários
+    // Método para adicionar uma despesa com criptografia no campo "valor"
     fun addConta(nome: String, valor: Double, dataVencimento: String, categoria: String, comentarios: String?) {
         val db = writableDatabase
+        val encryptedValue = AESUtils.encrypt(valor.toString()) // Criptografar o valor
         val values = ContentValues().apply {
             put(COLUMN_NAME, nome)
-            put(COLUMN_VALUE, valor)
+            put(COLUMN_VALUE, encryptedValue) // Salvar o valor criptografado
             put(COLUMN_DATE, dataVencimento)
             put(COLUMN_CATEGORY, categoria)
             put(COLUMN_COMMENTS, comentarios)
@@ -64,16 +65,18 @@ class DatabaseHelper(context: Context) :
         db.close()
     }
 
-    // Este método recupera todas as contas do banco de dados e pode ser usado para exibir uma lista na interface do usuário.
+    // Método para recuperar todas as contas com descriptografia do campo "valor"
     fun getAllContas(): List<Conta> {
         val contas = mutableListOf<Conta>()
         val db = readableDatabase
         val cursor = db.query(TABLE_NAME, null, null, null, null, null, null)
         while (cursor.moveToNext()) {
+            val encryptedValue = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VALUE))
+            val decryptedValue = AESUtils.decrypt(encryptedValue) // Descriptografar o valor
             val conta = Conta(
                 cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
-                cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VALUE)),
+                decryptedValue.toDouble(), // Converter o valor descriptografado para Double
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMMENTS))
@@ -85,24 +88,24 @@ class DatabaseHelper(context: Context) :
         return contas
     }
 
-    // Este método atualiza uma conta existente no banco de dados e edita informações.
+    // Método para atualizar uma conta existente no banco
     fun updateConta(id: Int, nome: String, valor: Double, dataVencimento: String, categoria: String, comentarios: String?) {
         val db = writableDatabase
+        val encryptedValue = AESUtils.encrypt(valor.toString()) // Criptografar o valor
         val values = ContentValues().apply {
             put(COLUMN_NAME, nome)
-            put(COLUMN_VALUE, valor)
+            put(COLUMN_VALUE, encryptedValue) // Atualizar com o valor criptografado
             put(COLUMN_DATE, dataVencimento)
             put(COLUMN_CATEGORY, categoria)
             put(COLUMN_COMMENTS, comentarios)
         }
-        // A cláusula WHERE especifica qual registro deve ser atualizado (baseado no ID)
         db.update(TABLE_NAME, values, "$COLUMN_ID = ?", arrayOf(id.toString()))
         db.close()
     }
 
+    // Método para excluir uma conta do banco
     fun deleteConta(id: Int) {
         val db = writableDatabase
-        // A cláusula WHERE especifica qual registro deve ser deletado (baseado no ID)
         db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(id.toString()))
         db.close()
     }
