@@ -12,7 +12,7 @@ data class Conta(
     val valor: Double,
     val dataVencimento: String,
     val categoria: String,
-    val comentarios: String? // Novo campo para armazenar os comentários
+    val comentarios: String?
 )
 
 class DatabaseHelper(context: Context) :
@@ -27,7 +27,7 @@ class DatabaseHelper(context: Context) :
         private const val COLUMN_VALUE = "valor"
         private const val COLUMN_DATE = "dataVencimento"
         private const val COLUMN_CATEGORY = "categoria"
-        private const val COLUMN_COMMENTS = "comentarios" // Nova coluna
+        private const val COLUMN_COMMENTS = "comentarios"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -58,7 +58,7 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_VALUE, valor)
             put(COLUMN_DATE, dataVencimento)
             put(COLUMN_CATEGORY, categoria)
-            put(COLUMN_COMMENTS, comentarios) // Adicionando os comentários
+            put(COLUMN_COMMENTS, comentarios)
         }
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -76,7 +76,7 @@ class DatabaseHelper(context: Context) :
                 cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VALUE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMMENTS)) // Recuperando os comentários
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMMENTS))
             )
             contas.add(conta)
         }
@@ -99,12 +99,35 @@ class DatabaseHelper(context: Context) :
                 cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VALUE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMMENTS)) // Recuperando os comentários
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMMENTS))
             )
             contas.add(conta)
         }
         cursor.close()
         db.close()
         return contas
+    }
+
+    // Método para atualizar uma despesa
+    fun updateConta(id: Int, nome: String, valor: Double, dataVencimento: String, categoria: String, comentarios: String?) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_NAME, nome)
+            put(COLUMN_VALUE, valor)
+            put(COLUMN_DATE, dataVencimento)
+            put(COLUMN_CATEGORY, categoria)
+            put(COLUMN_COMMENTS, comentarios)
+        }
+        // A cláusula WHERE especifica qual registro deve ser atualizado (baseado no ID)
+        db.update(TABLE_NAME, values, "$COLUMN_ID = ?", arrayOf(id.toString()))
+        db.close()
+    }
+
+    // Método para deletar uma despesa
+    fun deleteConta(id: Int) {
+        val db = writableDatabase
+        // A cláusula WHERE especifica qual registro deve ser deletado (baseado no ID)
+        db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(id.toString()))
+        db.close()
     }
 }

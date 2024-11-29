@@ -28,11 +28,15 @@ class ExpenseAdapter(private val context: Context, private val expenses: List<Co
         val nameTextView: TextView = view.findViewById(R.id.expenseName)
         val amountTextView: TextView = view.findViewById(R.id.expenseAmount)
         val dateTextView: TextView = view.findViewById(R.id.expenseDate)
+        val categoryTextView: TextView = view.findViewById(R.id.expenseCategory)
+        val commentsTextView: TextView = view.findViewById(R.id.expenseComments)
 
-        // Utilização de strings do arquivo strings.xml
+        // Preencher com as informações da despesa
         nameTextView.text = expense.nome
         amountTextView.text = context.getString(R.string.expense_amount, expense.valor)
-        dateTextView.text = context.getString(R.string.expense_date, expense.dataVencimento)
+        dateTextView.text = expense.dataVencimento
+        categoryTextView.text = expense.categoria
+        commentsTextView.text = expense.comentarios ?: context.getString(R.string.hint_expense_comments)
 
         return view
     }

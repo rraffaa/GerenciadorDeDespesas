@@ -8,10 +8,11 @@
     <string name="btn_save_expense">Salvar Despesa</string>
     <string name="expense_name">Nome da Despesa</string>
     <string name="expense_amount">R$ %1$.2f</string>
-    <string name="expense_date">01/01/2024</string>
+    <string name="expense_date">%1$s</string> <!-- Corrigido para um formato dinâmico -->
     <string name="adicionar_despesa">Adicionar Despesa</string>
     <string name="bem_vindo_ao_gerenciamento_de_despesas">Bem-vindo ao Gerenciamento de Despesas</string>
     <string name="hint_expense_category">Categoria</string>  <!-- Nova string para categoria -->
+    <string name="hint_expense_comments">Comentários sobre a despesa</string>  <!-- Nova string para comentários -->
 
     <!-- Novas strings para o filtro de despesas -->
     <string name="hint_category_filter">Digite a categoria para filtrar</string>
@@ -21,14 +22,11 @@
     <string name="btn_filter_description">Botão para filtrar as despesas pela categoria</string>
     <string name="tv_filtered_results_description">Exibição dos resultados filtrados das despesas</string>
 
-
-        <string name="error_name_required">O nome é obrigatório.</string>
-        <string name="error_valid_amount">Por favor, insira um valor válido.</string>
-        <string name="error_invalid_date">Data inválida.</string>
-        <string name="error_category_required">A categoria é obrigatória.</string>
-        <string name="expense_added_successfully">Despesa adicionada com sucesso!</string>
-        <string name="error_saving_expense">Erro ao salvar a despesa: %1$s</string>
-        <string name="hint_expense_comments">Comentários sobre a despesa</string>
-
-
+    <!-- Mensagens de erro -->
+    <string name="error_name_required">O nome é obrigatório.</string>
+    <string name="error_valid_amount">Por favor, insira um valor válido.</string>
+    <string name="error_invalid_date">Data inválida.</string>
+    <string name="error_category_required">A categoria é obrigatória.</string>
+    <string name="expense_added_successfully">Despesa adicionada com sucesso!</string>
+    <string name="error_saving_expense">Erro ao salvar a despesa: %1$s</string>
 </resources>

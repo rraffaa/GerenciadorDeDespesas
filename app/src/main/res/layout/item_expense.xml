@@ -29,4 +29,22 @@
         android:textSize="16sp"
         android:textColor="#000000" />
 
+    <!-- Novo campo Categoria -->
+    <TextView
+        android:id="@+id/expenseCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hint_expense_category"
+        android:textSize="16sp"
+        android:textColor="#000000" />
+
+    <!-- Novo campo Comentários -->
+    <TextView
+        android:id="@+id/expenseComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hint_expense_comments"
+        android:textSize="16sp"
+        android:textColor="#000000" />
+
 </LinearLayout>
