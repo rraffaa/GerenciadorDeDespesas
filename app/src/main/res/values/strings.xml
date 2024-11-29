@@ -1,5 +1,5 @@
 <resources>
-    <!-- Strings existentes -->
+
     <string name="app_name">Gerenciamento_Despesas</string>
     <string name="button_add">Adicionar Conta</string>
     <string name="hint_expense_name">Nome da Despesa</string>
@@ -8,13 +8,15 @@
     <string name="btn_save_expense">Salvar Despesa</string>
     <string name="expense_name">Nome da Despesa</string>
     <string name="expense_amount">R$ %1$.2f</string>
-    <string name="expense_date">%1$s</string> <!-- Corrigido para um formato dinâmico -->
+    <string name="expense_date">%1$s</string>
     <string name="adicionar_despesa">Adicionar Despesa</string>
     <string name="bem_vindo_ao_gerenciamento_de_despesas">Bem-vindo ao Gerenciamento de Despesas</string>
-    <string name="hint_expense_category">Categoria</string>  <!-- Nova string para categoria -->
-    <string name="hint_expense_comments">Comentários sobre a despesa</string>  <!-- Nova string para comentários -->
+    <string name="hint_expense_category">Categoria</string>
+    <string name="hint_expense_comments">Comentários não fornecidos</string>
+    <string name="btn_edit">Editar</string>
+    <string name="btn_delete">Deletar</string>
 
-    <!-- Novas strings para o filtro de despesas -->
+
     <string name="hint_category_filter">Digite a categoria para filtrar</string>
     <string name="btn_filter">Filtrar Despesas</string>
     <string name="tv_filtered_results">Resultados filtrados aparecerão aqui</string>
@@ -29,4 +31,8 @@
     <string name="error_category_required">A categoria é obrigatória.</string>
     <string name="expense_added_successfully">Despesa adicionada com sucesso!</string>
     <string name="error_saving_expense">Erro ao salvar a despesa: %1$s</string>
+    <string name="expense_deleted_successfully">Despesa deletada com sucesso!</string>
+    <string name="error_deleting_expense">Erro ao deletar a despesa.</string>
+
+
 </resources>

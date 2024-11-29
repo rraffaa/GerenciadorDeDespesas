@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class DashboardActivity : AppCompatActivity() {
@@ -18,7 +19,7 @@ class DashboardActivity : AppCompatActivity() {
         // Inicializa a lista de despesas
         expenses = getExpenses()
 
-        // Configura o Adapter
+        // Configura o Adapter, passando os métodos de editar e deletar como parâmetros
         expenseAdapter = ExpenseAdapter(this, expenses, ::editExpense, ::deleteExpense)
         val lvExpenses = findViewById<ListView>(R.id.lvExpenses)
         lvExpenses.adapter = expenseAdapter
@@ -33,24 +34,25 @@ class DashboardActivity : AppCompatActivity() {
 
     // Função para editar a despesa
     private fun editExpense(expense: Conta) {
-        // Aqui você pode abrir um novo Activity ou Dialog para editar a despesa
         val intent = Intent(this, AddExpenseActivity::class.java)
-        intent.putExtra("expense_id", expense.id)
+        intent.putExtra("expense_id", expense.id)  // Passa o ID da despesa para edição
         startActivity(intent)
     }
 
     // Função para deletar a despesa
     private fun deleteExpense(expense: Conta) {
-        // Aqui você pode remover a despesa da lista ou do banco de dados
-        expenses.remove(expense)
-        expenseAdapter.notifyDataSetChanged()
+        val db = DatabaseHelper(this)
+        db.deleteConta(expense.id)  // Atualiza o método para usar deleteConta
+        expenses.remove(expense)  // Remove da lista local
+        expenseAdapter.notifyDataSetChanged()  // Atualiza a lista
+        Toast.makeText(this, R.string.expense_deleted_successfully, Toast.LENGTH_SHORT).show()
     }
 
-    // Função fictícia para obter despesas
+    // Função fictícia para obter despesas (substituir por acesso ao banco de dados real)
     private fun getExpenses(): MutableList<Conta> {
         return mutableListOf(
-            Conta(1, "Conta de Luz", 100.0, "2024-12-01"),
-            Conta(2, "Supermercado", 250.0, "2024-12-05")
+            Conta(1, "Conta de Luz", 100.0, "2024-12-01", "Contas Mensais", "Pagar até o vencimento."),
+            Conta(2, "Supermercado", 250.0, "2024-12-05", "Alimentação", "Verificar promoções antes.")
         )
     }
 }

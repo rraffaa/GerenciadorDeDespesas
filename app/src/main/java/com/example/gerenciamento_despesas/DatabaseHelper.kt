@@ -64,7 +64,7 @@ class DatabaseHelper(context: Context) :
         db.close()
     }
 
-    // Método para buscar todas as despesas
+    // Este método recupera todas as contas do banco de dados e pode ser usado para exibir uma lista na interface do usuário.
     fun getAllContas(): List<Conta> {
         val contas = mutableListOf<Conta>()
         val db = readableDatabase
@@ -85,30 +85,7 @@ class DatabaseHelper(context: Context) :
         return contas
     }
 
-    // Método para buscar despesas por categoria
-    fun getContasByCategoria(categoria: String): List<Conta> {
-        val contas = mutableListOf<Conta>()
-        val db = readableDatabase
-        val selection = "$COLUMN_CATEGORY = ?"
-        val selectionArgs = arrayOf(categoria)
-        val cursor = db.query(TABLE_NAME, null, selection, selectionArgs, null, null, null)
-        while (cursor.moveToNext()) {
-            val conta = Conta(
-                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
-                cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_VALUE)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COMMENTS))
-            )
-            contas.add(conta)
-        }
-        cursor.close()
-        db.close()
-        return contas
-    }
-
-    // Método para atualizar uma despesa
+    // Este método atualiza uma conta existente no banco de dados e edita informações.
     fun updateConta(id: Int, nome: String, valor: Double, dataVencimento: String, categoria: String, comentarios: String?) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -123,7 +100,6 @@ class DatabaseHelper(context: Context) :
         db.close()
     }
 
-    // Método para deletar uma despesa
     fun deleteConta(id: Int) {
         val db = writableDatabase
         // A cláusula WHERE especifica qual registro deve ser deletado (baseado no ID)
